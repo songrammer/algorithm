@@ -1,20 +1,26 @@
 t = input()
-arr=[]
+def palindrome(left ,right, skip,str):
+    # print(str,left,str[left],right,str[right])
+    if left>right  :
+        return True
+    if str[left] == str[right]:
+         return palindrome(left+1,right-1,skip,str)
+    if skip :
+        # print( palindrome(left,right-1,0,str))
+        # print( palindrome(left+1,right,0,str))
+        return palindrome(left,right-1,0,str)|palindrome(left+1,right,0,str)
+    else :
+        return False
 
+    
 def check(str):
-    if(str[::-1]==str): #회문인지 확인
+    if str == str[::-1]: 
         return 0
-    else:
-        result=False
-        for i in range(len(str)): #유사회문 가능한지 확인
-            changeStr=str[:i]+str[i+1:len(str)]
-            if(changeStr ==changeStr[::-1]):
-                result=True
-                break;
-        if result:
-            return 1
-        else :
-            return 2
+    if palindrome(0,len(str)-1,1,str): 
+        return 1
+    else :
+        return 2
+   
     
 for _ in range(int(t)):
     x =input()
