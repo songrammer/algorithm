@@ -11,6 +11,8 @@ https://www.acmicpc.net/user/johyesong8686
 3. 그래프
    - BFS
       12851(숨바꼭질 2)
+4. 그리디
+      5585(거스름돈)
 
        
 
