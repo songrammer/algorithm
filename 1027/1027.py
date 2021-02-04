@@ -2,26 +2,33 @@ N = int(input())
 cnt =[[0]* 2 for _ in range(N)]
 arr=list(map(int,input().split()))
 
-start=0;
-end=0
-while end<N:
-    # print(arr[start],arr[end])
-    if(start==end):
-        end +=1
-        continue
-    if(arr[start]<=arr[end]):
-        cnt[end][0]=max(cnt[end][0],end-start)
-        start+=1
-    else: 
-        cnt[start][1]=max(cnt[start][1],end-start)
-        end +=1
-    # print(cnt)
 
+for i in range(N-1):
+    maxValue=0
+    for x in range(N-i-1):
+        j=x+i+1
+        # print (i,x)
+        # print(arr[i],arr[j])
+        if(arr[i]<=arr[j]):
+            cnt[j][0]=max((j-i),cnt[j][0])
+            cnt[i][1]=max((j-i),cnt[i][1])
+            break
+        if(arr[i]>arr[j]):
+            if(arr[j]>maxValue):
+                cnt[j][0]=max((j-i),cnt[j][0])
+                cnt[i][1]=max((j-i),cnt[i][1])
+            else :
+                cnt[i][1]=max((j-i),cnt[i][1])
+        maxValue=max(maxValue,arr[j])
+         
+    # print(cnt)
+                
 ans =0
 for i in range(N):
     ans=max(ans,cnt[i][0]+cnt[i][1])
 print(ans)
         
-        
+                
+
     
     
