@@ -8,9 +8,12 @@ struct Point{
     int y;
     int c;
 };
+
 int d_x[]={-1,1,0,0};
 int d_y[]={0,0,-1,1};
+
 int main() {
+
     while(true){
         int w,h;
         cin >>w >>h;
@@ -20,6 +23,7 @@ int main() {
         int s_x,s_y;
         int cnt=0;
         string p[h+1];
+
         for(int i=0;i<h;i++){
             cin >>p[i];
             for (int j=0; j<p[i].size();j++){
@@ -39,13 +43,13 @@ int main() {
         memset(visited,-1,sizeof(visited));
         visited[s_x][s_y]=1;
         int ans=0;
+
         while(!q.empty()){
             int x=q.front().x;
             int y=q.front().y;
             int c=q.front().c;
             q.pop();
-            if(cnt==0){
-                             
+            if(cnt==0){          
                  break;
             }
             // cout<<"cur :" <<"x :"<< x <<" y :"<<y<<" time :"<<c<<'\n';
