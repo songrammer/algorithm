@@ -5,16 +5,15 @@ using namespace std;
 int main() {
 	int n;
 	cin >>n;
-	vector <long long> a(n);
-	vector <long long> b(n);
-	vector <long long> c(n);
-	vector <long long> d(n);
-	
+	vector <int> a(n);
+	vector <int> b(n);
+	vector <int> c(n);
+	vector <int> d(n);
 	for (int i=0; i<n;i++) {
-		scanf("%ld %ld %ld %ld",&a[i],&b[i],&c[i],&d[i]);
+		scanf("%d %d %d %d",&a[i],&b[i],&c[i],&d[i]);
 	}
-	vector <long long> arr1;
-	vector <long long> arr2;
+	vector <int> arr1;
+	vector <int> arr2;
 	for (int i=0; i<n;i++) {
 		for (int j=0; j<n;j++) {
 			arr1.push_back(a[i]+b[j]);
@@ -25,11 +24,11 @@ int main() {
 
 	sort(arr2.begin(),arr2.end());
 	
-	int ans=0;
+	long long ans=0;
 	
 	for (int i=0; i<arr1.size();i++) {
-		long long num=arr1[i];
-		int cnt=upper_bound(arr2.begin(), arr2.end(),-num)-lower_bound(arr2.begin(), arr2.end(),-num);
+		int num=arr1[i];
+		long long cnt=upper_bound(arr2.begin(), arr2.end(),-num)-lower_bound(arr2.begin(), arr2.end(),-num);
 		if(cnt>0){
 		    ans+=cnt;
 		}

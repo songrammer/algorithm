@@ -13,4 +13,5 @@ https://www.acmicpc.net/problem/7453
 - 오름차순된 배열을 upper_bound와 lower_bound로 찾아서 카운팅해준다.
   - 해당 문제는 이분탐색을 사용할 시에 동일한 합이 여러 개 나올 경우를 모두 카운팅 해주지 못한다.
   - 파이썬으로 풀면 시간초과가 나기에 c++을 사용해야한다(젠장)
-  - int->longlong(최댓값끼리 계산 했을 때 int로는 오버플로우 생긴다.)
+  - ~~int->longlong(최댓값끼리 계산 했을 때 int로는 오버플로우 생긴다.)~~
+  - 정답 카운팅 int->longlong(최대 쌍이N^4 이다.)
