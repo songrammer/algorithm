@@ -1,37 +1,72 @@
 #include <iostream>
+#include <algorithm>
 #include <cmath>
-#include <vector>
 using namespace std;
-int L, W, H, N, a, b, cnt = 0, fail = 0;
-int cube[20];
-vector <pair<int, int>> v; //2의 a승과 그 개수를 저장
-void divide(int l, int w, int h, int idx) {
-	if (l == 0 || w == 0 || h == 0) return;
-	for (int i = idx; i < v.size(); i++) {
-		if (v[i].second != 0 && l >= v[i].first && w >= v[i].first && h >= v[i].first) {
-			v[i].second--;
-			cnt++;
-			divide(l - v[i].first, w, h, i);
-			divide(v[i].first, w - v[i].first, h, i);
-			divide(v[i].first, v[i].first, h - v[i].first, i);
-			return;
+
+int ans = 0;
+bool res = true;
+
+vector<pair<int, int> > arr;
+int n;
+
+void go(int w, int l, int h, int index)
+{
+
+	if (index == -1)
+	{
+		if ((long long)l * w * h > 0)
+		{ //부피가 남아있으면
+			res = false;
 		}
+		return;
 	}
-	fail = 1;
+
+	if (arr[index].second != 0 && l >= arr[index].first && w >= arr[index].first && h >= arr[index].first)
+	{
+		// 현재 위치의 길이로 넣을 수 있을때,
+		ans++;
+		arr[index].second--;
+
+		//3개로 분할한 직육면체의 각각 길이와 넓이
+		go(w - arr[index].first, l, h, index);
+		go(arr[index].first, l, h - arr[index].first, index);
+		go(arr[index].first, l - arr[index].first, arr[index].first, index);
+
+		return;
+	}
+	else
+	{
+		
+		go(w, l, h, index - 1);
+		return;
+	}
 }
-int main() {
-	cin >> L >> W >> H >> N;
-	for (int n = 0; n < N; n++) {
+
+int main()
+{
+	int L, W, H;
+	cin >> L >> W >> H;
+	cin >> n;
+
+	for (int i = 0; i < n; i++)
+	{
+		int a, b;
 		cin >> a >> b;
-		cube[a] += b;
+		arr.push_back(make_pair(pow(2, a), b));
 	}
-	for (int i = 19; i >= 0; i--) {
-		if (cube[i] != 0) {
-			v.push_back(make_pair(pow(2, i), cube[i]));
-		}
+
+	sort(arr.begin(), arr.end());
+
+	go(W, L, H, arr.size() - 1);
+
+	if (!res)
+	{
+		cout << -1 << '\n';
 	}
-	divide(L, W, H, 0);
-	if (fail) cout << -1;
-	else cout << cnt << endl;
+	else
+	{
+		cout << ans << '\n';
+	}
+
 	return 0;
 }
