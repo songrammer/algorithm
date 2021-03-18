@@ -1,45 +1,29 @@
+from  heapq import heappush,heappop
 [v,e]=list(map(int,input().split()))
 start=int(input())
 
 INF=1000000000
+heap=[] #우선순위 힙구하기
+d=[INF]*(v+1)
 
-d=[INF]*(v+5)
-visited=[0]*(v+5)
 
-adj=[[INF]*(v)for _ in range(v)]
-
-def getSmallindex():
-  min_value=INF
-  index=0
-  for i in range(v):
-    if(d[i]<min_value and visited[i]==0):
-      min_value=d[i]
-      index=i
-  return index
+adj=[[] for _ in range(v)]
 
 def dij(cur):
-  for i in range(v):
-    d[i]=adj[cur][i] #값 집어넣기 
-  visited[cur]=1
-  for i in range(v-2):
-    now=getSmallindex()
-    visited[now]=1
-    for j in range(v):
-      if(visited[j]==0):
-        if(d[now]+adj[now][j]<d[j]):
-          d[j]=d[now]+adj[now][j]
-
-
-
+  d[cur]=0
+  heappush(heap,[0,cur])
+  while heap:
+    value,x=heappop(heap) #힙에서 가장 작은 숫자 빼기
+    for  x_value,y in adj[x]:
+      y_value= x_value+value
+      if y_value<d[y]:
+        d[y]=y_value
+        heappush(heap,[y_value,y])
+        
 for _ in range(e):
     [x,y,z]=list(map(int,input().split()))
-    adj[x-1][y-1]=min(adj[x-1][y-1],z)
-   
-
-for i in range(v):
-    adj[i][i]=0 #자기자신으로 돌아오는건 0
+    adj[x-1].append([z,y-1])#인접리스트 인데, 우선순위 큐를 사용하게 때문에 가중치를 앞으로 둬야한다.
     
-
     
 dij(start-1)
 
