@@ -21,4 +21,5 @@ https://www.acmicpc.net/problem/15684
     - 1~H까지 순차적으로 돌면서 한칸씩 내려가는 도중 M번째에서 연결된 다리가 있을 때 위치를 이동
 - 모두 도는 경우의 수는 어떻게 구현할까 ?
     ~~- Next_Permutation을 활용해보자 !~~
-    - Next_Permutation이 아니라 재귀를 사용해서 넣고 빼고한다.
+    - Next_Permutation이 아니라 재귀를 사용해서 넣고 면서 매 회 체킹한다.
+    - 행을 점차 바꿔 내려가면서 탐색을 진행한다.
