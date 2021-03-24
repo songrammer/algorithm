@@ -6,51 +6,10 @@
 using namespace std;
 
 int n, m;
-int p[51][51];
+
 int dx[] = {0, 0, -1, 1};
 int dy[] = {-1, 1, 0, 0};
 
-int BFS(int x, int y)
-{
-
-    int visited[51][51];
-    queue<pair<int, int> > q;
-    memset(visited, -1, sizeof(visited));
-    
-
-    visited[x][y] = 0;
-
-    q.push(make_pair(x, y));
-
-    while (!q.empty())
-    {
-
-        x = q.front().first;
-        y = q.front().second;
-        q.pop();
-        if (p[x][y] == 2)
-        {
-            return visited[x][y];
-        }
-
-        for (int i = 0; i < 4; i++)
-        {
-
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-
-            if (!(nx >= 0 && nx < n && ny >= 0 && ny < n))
-                continue;
-
-            if (visited[nx][ny] == -1 )
-            {
-
-                visited[nx][ny] = visited[x][y] + 1;
-                q.push(make_pair(nx, ny));
-            }
-        }
-    }
-}
 int main()
 {
 
@@ -79,75 +38,47 @@ int main()
     }
 
     vector<int> index;
-    
-    
+
     for (int i = 0; i < chiken.size() - m; i++)
     {
         index.push_back(0);
     }
 
-
     for (int i = 0; i < m; i++)
     {
         index.push_back(1);
     }
+    //조합 구하기 위해서 넣어준다.
 
-    
-
-//  for (int i = 0; i < index.size(); i++)
-//     {
-//         cout <<index[i]<< ' ';
-//     }
-    // cout <<'\n';
-    
     do
     {
 
-        memcpy(p, arr, sizeof(arr));
-        // cout << "pass" << '\n';
-        
-        //  for (int i = 0; i < n; i++)
-        // {
-        //     for (int j = 0; j < n; j++)
-        //     {
-
-        //         cout << p[i][j] << ' ';
-        //     }
-        //     cout << '\n';
-        // }
-// cout << "pass" << '\n';
-
+        vector<int> dist(house.size(), 100000000); 
+        //각 지점 마다의 길이의 최솟 값을 구하기위해 집 갯수만 큼 거리를 큰 숫자로 초기화 해준다.
         for (int i = 0; i < index.size(); i++)
         {
-            if (index[i] == 0)
-            { 
-               
-                // cout <<"(" <<chiken[i].first << " " << chiken[i].second <<")"<< '\n';
-                p[chiken[i].first][chiken[i].second] = 0;
+            if (index[i] == 1) //선택된 지점을 대상으로
+            {
+
+                int x1 = chiken[i].first;
+                int y1 = chiken[i].second;
+              
+                for (int j = 0; j < house.size(); j++)
+                {
+                    int x2 = house[j].first;
+                    int y2 = house[j].second;
+                    dist[j] = min(dist[j], abs(x1 - x2) + abs(y1 - y2)); //거리의 최솟값을 갱신한다.
+                }
             }
         }
-        //  cout <<"pass1"<<'\n';
-
-        // for (int i = 0; i < n; i++)
-        // {
-        //     for (int j = 0; j < n; j++)
-        //     {
-
-        //         cout << p[i][j] << ' ';
-        //     }
-        //     cout << '\n';
-        // }
 
         int sum = 0;
-        
-        for (int i = 0; i < house.size(); i++)
-        {   
-            // cout<<"go :"<<house[i].first<<" "<<house[i].second<<'\n';
-            int result=BFS(house[i].first, house[i].second);
-            // cout <<"result:"<<result<<'\n';
-            sum += result;
+
+        for (int i = 0; i < dist.size(); i++)
+        {
+            sum += dist[i];
         }
-        // cout << sum << '\n';
+        
 
         ans = min(sum, ans);
 
