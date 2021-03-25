@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 int A[15][15];
@@ -13,25 +14,23 @@ int dx[] = {0, 0, 1, -1, -1, -1, 1, 1};
 int dy[] = {-1, 1, 0, 0, -1, 1, 1, -1};
 struct Point
 {
-    int x, y, age;
+    int x, y, age, die;
 };
 
-struct cmp
+bool cmp(const Point &u, const Point &v)
 {
-    bool operator()(const Point &u, const Point &v)
-    {
-        return u.age > v.age;
-    }
-};
+    return u.age < v.age;
+}
+
 int main()
 {
 
-    priority_queue<Point, vector<Point>, cmp> pq;
+    vector<Point> pq;
 
     int n, m, k;
 
     cin >> n >> m >> k;
-    memset(p, 0, sizeof(p));
+   
 
     for (int i = 1; i <= n; i++)
     {
@@ -45,34 +44,30 @@ int main()
     {
         int x, y, value;
         cin >> x >> y >> value;
-        pq.push({x, y, value});
+        pq.push_back({x, y, value, 0});
     }
 
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= n; j++)
         {
-            p[i][j] += 5;
+            p[i][j] = 5;
         }
     }
+    sort(pq.begin(), pq.end(), cmp);
 
     while (k--)
     {
 
-        vector<Point> die;
-
-        priority_queue<Point, vector<Point>, cmp> temp;
-
-        while (!pq.empty()) //봄
+      
+        for (int i = 0; i < pq.size(); i++)
         {
 
-            int x = pq.top().x;
-            int y = pq.top().y;
-            int age = pq.top().age;
-            // cout <<"x:"<<x<<" y:"<<y <<" age:"<<age<<'\n';
-
-            pq.pop();
-            // cout <<"p:"<<p[x][y]<<'\n';
+            int x = pq[i].x;
+            int y = pq[i].y;
+            int age = pq[i].age;
+            if (pq[i].die)
+                continue;
 
             if (p[x][y] - age >= 0)
             {
@@ -80,71 +75,78 @@ int main()
                 age += 1;
 
                 // cout <<"pass1"<<'\n';
-                temp.push({x, y, age});
+                pq[i].age += 1;
             }
             else
             {
                 // cout <<"pass2"<<'\n';
-                die.push_back({x, y, age / 2});
+                pq[i].die = 1;
+                pq[i].age/=2;
             }
         }
 
-        while (!temp.empty()) //삭제 및 비우기
+        sort(pq.begin(), pq.end(), cmp);
+
+        for (int i = 0; i < pq.size(); i++)
         {
 
-            int x = temp.top().x;
-            int y = temp.top().y;
-            int age = temp.top().age;
+            int x = pq[i].x;
+            int y = pq[i].y;
+            int age = pq[i].age;
+            if (pq[i].die)
+            {
 
-            temp.pop();
-
-            pq.push({x, y, age});
+                p[x][y] += age;
+            }
         }
 
-        for (int i = 0; i < die.size(); i++) //여름
+        for (int i = 0; i < pq.size(); i++)
         {
 
-            int x = die[i].x;
-            int y = die[i].y;
-            int age = die[i].age;
-            p[x][y] += age;
-        }
-
-        while (!pq.empty()) //가을
-        {
-
-            int x = pq.top().x;
-            int y = pq.top().y;
-            int age = pq.top().age;
-
-            pq.pop();
+            int x = pq[i].x;
+            int y = pq[i].y;
+            int age = pq[i].age;
+            if (pq[i].die) continue;
 
             if (age % 5 == 0)
             {
 
-                for (int i = 0; i < 8; i++)
+                for (int j = 0; j < 8; j++)
                 {
-                    int nx = x + dx[i];
-                    int ny = y + dy[i];
+                    int nx = x + dx[j];
+                    int ny = y + dy[j];
                     if (nx >= 1 && nx <= n && ny >= 1 && ny <= n)
                     {
-                        temp.push({nx, ny, 1});
+                        pq.push_back({nx, ny, 1, 0});
                     }
                 }
             }
-            temp.push({x, y, age});
+            
         }
+         sort(pq.begin(), pq.end(), cmp);
 
-        for (int i = 1; i <= n; i++) //겨울
+        for (int i = 1; i <= n; i++)
         {
             for (int j = 1; j <= n; j++)
             {
                 p[i][j] += A[i][j];
             }
         }
-        pq = temp;
     }
-    cout << pq.size();
+
+    int ans = 0;
+    for (int i = 0; i < pq.size(); i++)
+    {
+
+        int x = pq[i].x;
+        int y = pq[i].y;
+        int age = pq[i].age;
+        if (pq[i].die)
+            continue;
+
+        ans += 1;
+    }
+    cout << ans << '\n';
 
     return 0;
 }
