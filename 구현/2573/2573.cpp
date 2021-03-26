@@ -60,6 +60,9 @@ int main()
         bool stop = false;
 
         memset(visited, -1, sizeof(visited));
+        int melts[305][305] = {
+            0,
+        };
 
         for (int i = 0; i < n; i++)
         {
@@ -80,15 +83,14 @@ int main()
                     if (p[nx][ny] == 0) //빙산 주변이 바다인지 체크
                     {
                         cnt++;
-                        stop = true; //녹는다.
+                        melts[i][j]++; //해당 지점에서 얼마나 녹는지 카운팅
+                        stop = true; //
                     }
                 }
-
-                p[i][j] - cnt > 0 ? p[i][j] -= cnt : p[i][j] = 0;
             }
         }
 
-        if (!stop)
+          if (!stop) //다 녹았지만, 분리가 안되었으므로 실패 
         {
             ans = 0;
             break;
@@ -96,13 +98,34 @@ int main()
 
         ans++;
 
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (melts[i][j]) //녹는 지점만 감 새줌
+                {
+                    if (p[i][j] - melts[i][j] > 0)
+                    {
+                        p[i][j] -= melts[i][j];
+                    }
+                    else
+                    {
+                        p[i][j] = 0;
+                    }
+                }
+            }
+            
+        }
+      
+
+
         int islands = 0;
 
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
-                if (visited[i][j] == -1 && p[i][j] != 0)
+                if (visited[i][j] == -1 && p[i][j] != 0) //덩어리 카운팅
                 {
                     BFS(i, j);
                     islands++;
