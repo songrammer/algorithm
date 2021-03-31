@@ -53,11 +53,15 @@ for i in range(k):
     cur=move_dic(now_go,vice_go)
   
     print(value[cur[4]]) #윗면 출력
+  
     
-    temp=value[cur[5]]
-    value[cur[5]]=arr[nx][ny]
-    arr[nx][ny]=temp 
-    #주사위와 판 값 교환
+    if(arr[nx][ny]): #이동한 칸의 숫자 가 있을때
+        value[cur[5]]=arr[nx][ny] #주사위로 복사하고
+        arr[nx][ny]=0 #해당 칸 0
+        
+    else:
+        arr[nx][ny]=value[cur[5]] #주사위 숫자 복사
+        
     
     x=nx
     y=ny
