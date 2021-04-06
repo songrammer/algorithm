@@ -33,7 +33,7 @@ https://www.acmicpc.net/problem/1700
     - 꽂혀 있지 않을 경우, 콘센트가 비여있으면 사용중으로 수정 후 pop_back, 비어있지 않다면 3 을 진행한다.
 3. 비어있지 않을 경우  vedtor <int> order[]를 전체 탐색하여 **가장 뒤에 쓰일것 이나** 쓰이지 않을  전기 용품 숫자를 알아낸다.
 4. 해당 전기용품을 빼고 현재 순서의 전기용품을 꼽아준다.
-    -order[전기용품] 순서를 pop_back devices[전기용품]=false, devices[현재순서]=true ,ans++ 
+ -order[전기용품] 순서를 pop_back devices[전기용품]=false, devices[현재순서]=true ,ans++ 
 
 
 
