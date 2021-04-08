@@ -20,5 +20,3 @@ https://www.acmicpc.net/problem/1753
     - 파이썬은 우선순위 큐(최소 힙) 으로 이루어 져 있다. 추가로 가중치를 기준으로 큐를 만들어야한다.
 
 다익스트라 알고리즘 실수 정리 링크 :http://www.secmem.org/blog/2019/01/09/wrong-dijkstra/
-
-
