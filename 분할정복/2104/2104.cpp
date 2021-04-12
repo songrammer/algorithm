@@ -1,71 +1,64 @@
 #include <iostream>
-#include <algorithm>
 #include <vector>
-
 using namespace std;
- 
-const int MAX = 1000005;
- 
-int N;
-vector<int> v(MAX);
- 
-long long go(int from, int to)
+vector<int> v;
+long long go(int start, int end)
 {
-    // 기저 사례
-    if (from == to) return (long long)v[from] * v[from];
- 
-    int mid = (from + to) / 2;
-    long long left_result = go(from, mid);
-    long long right_result = go(mid + 1, to);
- 
-    // 왼쪽, 오른쪽 부분배열 중 최대를 찾음
-    long long max_result = max(left_result, right_result);
- 
-    int left = mid;
-    int right = mid + 1;
- 
-    // mid에서 시작하는 교차하는 부분 배열
-    long long sum = v[left] + v[right];
-    long long min_value = min(v[left], v[right]);
-   
+    long long max_result = 0;
 
-    max_result = max(max_result, sum * min_value);
- 
-    // 교차 하는 부분 배열에서 최대를 찾음
-    while (left > from || right < to)
+    if (start == end)
     {
-        // 오른쪽으로 증가
-        if (right < to && (left == from || v[left - 1] < v[right + 1]))
-        {
-            sum += v[++right];
-            min_value = min(min_value, (long long)v[right]);
-        }
-        else    // 왼쪽으로 증가
-        {
-            sum += v[--left];
-            min_value = min(min_value, (long long)v[left]);
-        }
-        long long total_result = sum * min_value;
-        // 최대 값 비교
-        max_result = max(max_result, total_result);
+        return v[start] * v[end];
     }
-    
+    int mid = (start + end) / 2;
+
+    long long left_max = go(start, mid);
+    long long right_max = go(mid + 1, end);
+
+    max_result = max(left_max, right_max);
+
+    int left = mid;
+    int rihgt = mid + 1;
+
+    long long temp_sum = (v[left] + v[rihgt]);
+    long long min_index = min(v[left], v[rihgt]);
+
+    max_result = max(temp_sum * min_index, max_result);
+
+    while (left > start || rihgt < end)
+    {
+
+        if (left > start && (end == rihgt || v[left - 1] > v[rihgt + 1]))
+        {
+            temp_sum += v[--left];
+            min_index = min(min_index, (long long)v[left]);
+        }
+        else
+        {
+            temp_sum += v[++rihgt];
+            min_index = min(min_index, (long long)v[rihgt]);
+        }
+
+        max_result = max(max_result, (long long)temp_sum * min_index);
+    }
+
     return max_result;
 }
- 
-int main() 
+
+int main()
 {
-    cin.tie(0);
-    ios::sync_with_stdio(false);
-    
- 
-    cin >> N;
-    for (int i = 0; i <N; i++) {
-    
-    cin >>v[i];
-        
+
+    int n;
+    cin >> n;
+
+    for (int i = 0; i < n; i++)
+    {
+        int x;
+        cin >> x;
+        v.push_back(x);
     }
-    cout << go(0, N-1);
- 
+
+    cout << go(0, n - 1) << '\n';
+
     return 0;
 }
