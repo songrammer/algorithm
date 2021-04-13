@@ -1,6 +1,6 @@
 [N,K]=list(map(int ,input().split()))
 
-dp=[[0]*(K+1) for _ in range(N)]
+dp=[[0]*(K+1) for _ in range(N+1)]
 
 arr=[]
 
@@ -11,27 +11,15 @@ for _ in range(N):
     
 arr.sort(key=lambda x:(x[1],-x[0]),reverse=True)
     
-for i in range(0,N):
-        weight,value=arr[i][0], arr[i][1]
-        for j in range(K+1):
+for i in range(1,N+1):
+        weight,value=arr[i-1][0], arr[i-1][1]
+        for j in range(1,K+1):
             if(j<weight):
-                continue
-            if(i==0):
-                dp[i][j]=value
+                dp[i][j]=dp[i-1][j]
+             
             else :
                 dp[i][j]=max(dp[i-1][j],dp[i-1][j-weight]+value)
                     
            
-         
-print(dp[N-1][K])
+print(dp[N][K])
                 
-
-            
-            
-        
-    
-        
-        
-        
-      
-    
