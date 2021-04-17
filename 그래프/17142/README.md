@@ -2,7 +2,7 @@ https://www.acmicpc.net/problem/17142
 
 ### 문제 설명
 
-<img src="./스크린샷 2021-04-17 오후 5.29.34.png" width="800">
+<img src="./img.png" width="900" height="600">
 
 - 첫째 줄에 연구소의 크기 N(4 ≤ N ≤ 50), 놓을 수 있는 바이러스의 개수 M(1 ≤ M ≤ 10)이 주어진다.
 
