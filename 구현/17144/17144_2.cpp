@@ -6,9 +6,13 @@ int room[51][51];
 int R, C, T;
 
 int dx[] = {-1, 0, 1, 0};
-int dy[] = {0, -1, 0, 1};
+int dy[] = {0, 1, 0, -1};
+
+int ccw[] = {1, 0, 3, 2}; //반시계
+int cw[] = {1, 2, 3, 0};  //시계
+
 vector<pair<int, int> > clean;
-bool check(int x, int y) //범위 체크
+bool check(int x, int y)
 {
     if (x >= 0 && x < R && y >= 0 && y < C)
     {
@@ -19,17 +23,14 @@ bool check(int x, int y) //범위 체크
         return false;
     }
 }
-
-void clean_set() //공청 위치 셋팅
+void clean_set()
 {
     for (int i = 0; i < clean.size(); i++)
     {
-
         room[clean[i].first][clean[i].second] = -1;
     }
 }
-
-void spread() //확산
+void spread()
 {
     int temp[51][51];
     memset(temp, 0, sizeof(temp));
@@ -38,7 +39,6 @@ void spread() //확산
     {
         for (int y = 0; y < C; y++)
         {
-
             if (room[x][y] <= 0)
                 continue;
             int cnt = 0;
@@ -50,78 +50,37 @@ void spread() //확산
                 if (!check(nx, ny) || room[nx][ny] == -1)
                     continue;
                 cnt++;
-
                 temp[nx][ny] += (value / 5);
             }
-
             temp[x][y] += room[x][y] - ((value / 5)) * cnt;
         }
     }
-
     memcpy(room, temp, sizeof(temp));
 }
-
-void go_clean_up() //위에 반시계 청소
+void circulate(int x, int y, int dir[]) //공기 청정기 작동 공통화
 {
-    int c_x = clean[0].first;
-    int c_y = clean[0].second;
-    for (int i = c_x - 1; i >= 0; i--)
+    int temp[51][51];
+
+    temp[x][y] = 0;
+
+    for (int k = 0; k < 4; k++)
     {
+        while (true)
+        {
+            int nx = x + dx[dir[k]];
+            int ny = y + dy[dir[k]];
 
-        room[i + 1][c_y] = room[i][c_y];
-        room[i][c_y] = 0;
+            if (!check(nx, ny))
+                break;
+            if (nx == clean[0].first && ny == clean[0].second || nx == clean[1].first && ny == clean[1].second)
+                break;
+
+            temp[nx][ny] = room[x][y];
+            x = nx;
+            y = ny;
+        }
     }
-
-    for (int j = 1; j < C; j++)
-    {
-        room[0][j - 1] = room[0][j];
-        room[0][j] = 0;
-    }
-
-    for (int i = 1; i <= c_x; i++)
-    {
-        room[i - 1][C - 1] = room[i][C - 1];
-
-        room[i][C - 1] = 0;
-    }
-
-    for (int j = C - 1 - 1; j >= 1; j--)
-    {
-        room[c_x][j + 1] = room[c_x][j];
-        room[c_x][j] = 0;
-    }
-}
-
-void go_clean_down() //시계 청소
-{
-
-    int c_x = clean[1].first;
-    int c_y = clean[1].second;
-    for (int i = c_x + 1; i <= R - 1; i++)
-    {
-
-        room[i - 1][c_y] = room[i][c_y];
-
-        room[i][c_y] = 0;
-    }
-
-    for (int j = 1; j < C; j++)
-    {
-        room[R - 1][j - 1] = room[R - 1][j];
-        room[R - 1][j] = 0;
-    }
-
-    for (int i = R - 1 - 1; i >= c_x; i--)
-    {
-        room[i + 1][C - 1] = room[i][C - 1];
-        room[i][C - 1] = 0;
-    }
-
-    for (int j = C - 1 - 1; j >= 1; j--)
-    {
-        room[c_x][j + 1] = room[c_x][j];
-        room[c_x][j] = 0;
-    }
+    memcpy(room, temp, sizeof(temp));
 }
 
 int main()
@@ -139,16 +98,15 @@ int main()
             }
         }
     }
-
     while (T--)
     {
         spread();
-        go_clean_up();
-        go_clean_down();
+        circulate(clean[0].first, clean[0].second + 1, ccw); //반시계 (위)
+        circulate(clean[1].first, clean[1].second + 1, cw);  //시계(아래)
+
         clean_set();
     }
     int ans = 0;
-
     for (int i = 0; i < R; i++)
     {
         for (int j = 0; j < C; j++)
@@ -160,6 +118,5 @@ int main()
         }
     }
     cout << ans << '\n';
-
     return 0;
 }
