@@ -11,7 +11,7 @@ struct Point
     int s, d, z;
 };
 
-vector<Point> map[101][101]; //상어 저장을 위한 판
+Point map[101][101]; //상어 저장을 위한 판
 
 int dx[] = {0, -1, 1, 0, 0};
 int dy[] = {0, 0, 0, 1, -1};
@@ -19,21 +19,23 @@ int dy[] = {0, 0, 0, 1, -1};
 void move()
 {
 
-    vector<Point> temp[101][101]; //같은 배열에 넣으면 이동하면서 꼬일 수 있으므로 새로 만들어줌
+    Point temp[101][101]; //같은 배열에 넣으면 이동하면서 꼬일 수 있으므로 새로 만들어줌
+    memset(temp, 0, sizeof(temp));
+
     for (int i = 1; i <= r; i++)
     {
         for (int j = 1; j <= c; j++)
         {
-            if (map[i][j].size()) //해당하는 공간에 상어가 있다면,
+            if (map[i][j].z) //해당하는 공간에 상어가 있다면,
             {
                 int x = i;
                 int y = j;
-                int s = map[i][j][0].s;
-                int d = map[i][j][0].d;
-                int z = map[i][j][0].z;
+                int s = map[i][j].s;
+                int d = map[i][j].d;
+                int z = map[i][j].z;
                 int nx;
                 int ny;
-                map[i][j].pop_back();
+                map[i][j] = {0, 0, 0};
 
                 int cnt = s;
 
@@ -92,39 +94,22 @@ void move()
                     }
                 }
 
-                if (temp[x][y].size()) //해당 위치에 상어가 이미 있다면
+                if (temp[x][y].z) //해당 위치에 상어가 이미 있다면
                 {
-                    if (temp[x][y][0].z < z) //더 크기 큰 상어 남김
+                    if (temp[x][y].z < z) //더 크기 큰 상어 남김
                     {
-                        temp[x][y].pop_back();
-                        temp[x][y].push_back({s, d, z});
+                        temp[x][y] = {s, d, z};
                     }
                 }
                 else
                 {
                     //없다면 추가
-                    temp[x][y].push_back({s, d, z});
+                    temp[x][y] = {s, d, z};
                 }
             }
         }
     }
-
-    for (int i = 1; i <= r; i++)
-    {
-        for (int j = 1; j <= c; j++)
-        {
-            //이동한 결과 복사
-
-            if (temp[i][j].size())
-            {
-                map[i][j] = temp[i][j];
-            }
-            else
-            {
-                map[i][j].clear();
-            }
-        }
-    }
+    memcpy(map, temp, sizeof(temp));
 }
 
 int main()
@@ -135,7 +120,7 @@ int main()
     {
         int x, y, s, d, z;
         cin >> x >> y >> s >> d >> z;
-        map[x][y].push_back({s, d, z});
+        map[x][y] = {s, d, z};
     }
     int ans = 0;
 
@@ -144,10 +129,10 @@ int main()
 
         for (int i = 1; i <= r; i++) //낚시
         {
-            if (map[i][j].size())
+            if (map[i][j].z)
             {
-                ans += map[i][j][0].z;
-                map[i][j].clear();
+                ans += map[i][j].z;
+                map[i][j] = {0, 0, 0};
                 break;
             }
         }
