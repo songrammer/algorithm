@@ -8,7 +8,7 @@ https://www.acmicpc.net/problem/14500
 
 - 대칭 및 회전을 통해 만들 수 있는 모양의 종류는 다음과 같다.
 
-<img src="./img1.png" width="500" heithg="500">
+<img src="./img2.png" width="500" heithg="500">
 
 - 세로 크기 N과 가로 크기 M (4 ≤ N, M ≤ 500)이고 가능한 모양은 19개 이다.
 
