@@ -109,6 +109,12 @@ int ans = 0;
 void go(int cnt, int start, int value)
 {
 
+    if (core > cnt + (v.size() - start))
+    {
+
+        return;
+    }
+
     if (core < cnt) //코어가 더 클때
     {
 
