@@ -21,7 +21,6 @@ function solution(s) {
                 str_temp+=str;
                 str=s.slice(j,j+i);
                 cnt=1;
-
             }
             
         }
