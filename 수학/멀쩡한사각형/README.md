@@ -19,10 +19,9 @@ https://programmers.co.kr/learn/courses/30/lessons/42839
 
  <img src="./img2.png" width="300">
 
-- w:8 h:12 일 경우이다.
+- w:8 h:12 일 경우이다.(w:2 h:3 일때에서 4번 반복된다.)
 
-  - w:2 h:3 일때에서 4번 반복된다.
-    <img src="./img5.png" width="500">
+  <img src="./img5.png" width="500">
 
 > 16개가 빠진다.(w+h-4)이다.
 
